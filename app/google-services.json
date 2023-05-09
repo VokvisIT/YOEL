@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "530427685513",
+    "firebase_url": "https://yoeldb-5c011-default-rtdb.firebaseio.com",
+    "project_id": "yoeldb-5c011",
+    "storage_bucket": "yoeldb-5c011.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530427685513:android:24d94f0da2e99d52df3458",
+        "android_client_info": {
+          "package_name": "com.example.yoel_beta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "530427685513-i719qddklno04meoce303oumibud9gjo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBS9MTCBCuqSpSPufDwbB5_PNI6DNc4H3w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "530427685513-i719qddklno04meoce303oumibud9gjo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

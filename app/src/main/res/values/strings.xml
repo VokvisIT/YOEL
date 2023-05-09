@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">yoel_beta</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sign_in">Login for</string>
+    <string name="sign_in2">"Welcome back you've been missed!"</string>
+    <string name="email">Enter your email</string>
+    <string name="pass">Enter your password</string>
+</resources>
