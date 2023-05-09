@@ -4,6 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sign_in">Login for</string>
     <string name="sign_in2">"Welcome back you've been missed!"</string>
-    <string name="email">Enter your email</string>
-    <string name="pass">Enter your password</string>
+    <string name="email">Type your email</string>
+    <string name="pass">Type your password</string>
+    <string name="repass">Retype your password</string>
 </resources>
