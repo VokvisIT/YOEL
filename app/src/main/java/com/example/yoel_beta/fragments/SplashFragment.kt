@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 class SplashFragment : Fragment() {
-    private lateinit var mAuth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
     private lateinit var navController: NavController
 
     override fun onCreateView(
@@ -27,20 +27,20 @@ class SplashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         init(view)
+//        val isLogin: Boolean = mAuth.currentUser != null
 
-        val isLogin: Boolean = mAuth.currentUser != null
-
-        val handler = Handler(Looper.myLooper()!!)
-        handler.postDelayed({
-            navController.navigate(R.id.action_splashFragment_to_signInFragment)
-
+        Handler(Looper.myLooper()!!).postDelayed({
+            if (auth.currentUser != null){
+                navController.navigate(R.id.action_splashFragment_to_homeFragment)
+            }else{
+                navController.navigate(R.id.action_splashFragment_to_signInFragment)
+            }
         }, 2000)
     }
 
     private fun init(view: View) {
-        mAuth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
         navController = Navigation.findNavController(view)
     }
 }
