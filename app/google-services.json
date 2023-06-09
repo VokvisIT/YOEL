@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "530427685513",
-    "firebase_url": "https://yoeldb-5c011-default-rtdb.firebaseio.com",
-    "project_id": "yoeldb-5c011",
-    "storage_bucket": "yoeldb-5c011.appspot.com"
+    "project_number": "867014215673",
+    "firebase_url": "https://yoeldb-3f763-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "yoeldb-3f763",
+    "storage_bucket": "yoeldb-3f763.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:530427685513:android:24d94f0da2e99d52df3458",
+        "mobilesdk_app_id": "1:867014215673:android:cbaed84a1059dc9c549f28",
         "android_client_info": {
           "package_name": "com.example.yoel_beta"
         }
       },
       "oauth_client": [
         {
-          "client_id": "530427685513-i719qddklno04meoce303oumibud9gjo.apps.googleusercontent.com",
+          "client_id": "867014215673-0v93vclanqirb69a2jcsg8h3lt70thf0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBS9MTCBCuqSpSPufDwbB5_PNI6DNc4H3w"
+          "current_key": "AIzaSyA1q67vqfJ30HA4kgrClCRfEvkyH_MzkPg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "530427685513-i719qddklno04meoce303oumibud9gjo.apps.googleusercontent.com",
+              "client_id": "867014215673-0v93vclanqirb69a2jcsg8h3lt70thf0.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
