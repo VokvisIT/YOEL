@@ -8,19 +8,20 @@ import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.yoel_beta.R
-import com.example.yoel_beta.databinding.FragmentHomeBinding
+
+import com.example.yoel_beta.databinding.FragmentHomeOldBinding
 import com.google.firebase.auth.FirebaseAuth
 
 
 class HomeFragment : Fragment() {
-    private lateinit var binding: FragmentHomeBinding
+    private lateinit var binding: FragmentHomeOldBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var navControl: NavController
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding = FragmentHomeOldBinding.inflate(inflater, container, false)
         return binding.root
     }
 
