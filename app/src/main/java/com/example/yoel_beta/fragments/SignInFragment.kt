@@ -1,5 +1,6 @@
 package com.example.yoel_beta.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.example.yoel_beta.HomeActivity
 import com.example.yoel_beta.R
 import com.example.yoel_beta.databinding.FragmentSignInBinding
 import com.google.android.gms.tasks.OnCompleteListener
@@ -50,7 +52,8 @@ class SignInFragment : Fragment() {
                     OnCompleteListener {
                         if (it.isSuccessful){
                             Toast.makeText(context, "Login Successfully", Toast.LENGTH_SHORT).show()
-//                            navControl.navigate(R.id.action_signInFragment_to_homeFragment2)
+                            val intent = Intent(activity, HomeActivity::class.java)
+                            startActivity(intent)
                         }else{
                             Toast.makeText(context, it.exception?.message, Toast.LENGTH_SHORT).show()
                         }

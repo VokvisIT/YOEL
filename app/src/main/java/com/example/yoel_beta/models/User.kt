@@ -1,10 +1,9 @@
 package com.example.yoel_beta.models
 
-data class User(
-//    private var userId:String,
-    private var email: String,
-    private var pass: String,
-    private var exp: Int,
+data class User @JvmOverloads constructor(
+    private var email: String = "",
+    private var pass: String = "",
+    private var exp: Int = 0
 ){
     // Конструктор
     init {
@@ -14,7 +13,7 @@ data class User(
     }
     // Геттер для свойства email
     fun getEmail(): String {
-        return email
+        return email.toString()
     }
 
     // Сеттер для свойства email
