@@ -50,7 +50,7 @@ class SignInFragment : Fragment() {
                     OnCompleteListener {
                         if (it.isSuccessful){
                             Toast.makeText(context, "Login Successfully", Toast.LENGTH_SHORT).show()
-                            navControl.navigate(R.id.action_signInFragment_to_homeFragment2)
+//                            navControl.navigate(R.id.action_signInFragment_to_homeFragment2)
                         }else{
                             Toast.makeText(context, it.exception?.message, Toast.LENGTH_SHORT).show()
                         }

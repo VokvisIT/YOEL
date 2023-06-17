@@ -7,4 +7,8 @@
     <string name="email">Type your email</string>
     <string name="pass">Type your password</string>
     <string name="repass">Retype your password</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_tasks">Tasks</string>
+    <string name="title_settings">Settings</string>
 </resources>

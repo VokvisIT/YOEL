@@ -67,7 +67,7 @@ class SignUpFragment : Fragment() {
                                     OnCompleteListener {
                                         if (it.isSuccessful){
                                             Toast.makeText(context, "Registered Successfully", Toast.LENGTH_SHORT).show()
-                                            navControl.navigate(R.id.action_signUpFragment_to_homeFragment3)
+//                                            navControl.navigate(R.id.action_signUpFragment_to_homeFragment3)
                                         }else{
                                             Toast.makeText(context, it.exception?.message, Toast.LENGTH_SHORT).show()
                                         }
