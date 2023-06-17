@@ -7,7 +7,6 @@
         android:layout_height="match_parent">
         <!--Let's go-->
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/profile_info"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:gravity="center_vertical"
@@ -31,25 +30,6 @@
                 android:textColor="@color/black"
                 android:textSize="16sp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/logOut"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_style"
-            android:fontFamily="@font/jost_medium"
-            android:text="Log Out"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_info"
-            app:layout_constraintVertical_bias="1.0">
-
-        </androidx.appcompat.widget.AppCompatButton>
         <!--End-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
