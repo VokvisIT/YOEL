@@ -5,6 +5,7 @@
     <string name="sign_in">Login for</string>
     <string name="sign_in2">"Welcome back you've been missed!"</string>
     <string name="email">Type your email</string>
+    <string name="username">Type your Usename</string>
     <string name="pass">Type your password</string>
     <string name="repass">Retype your password</string>
     <string name="title_activity_home">HomeActivity</string>

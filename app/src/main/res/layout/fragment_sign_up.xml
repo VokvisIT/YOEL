@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -42,7 +41,6 @@
             android:id="@+id/cardView1"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
             app:cardCornerRadius="10dp"
             app:cardElevation="0dp"
             app:cardUseCompatPadding="true"
@@ -50,7 +48,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text2"
+            app:layout_constraintTop_toBottomOf="@+id/cardView0"
             app:strokeColor="@color/bg_load">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -75,7 +73,42 @@
                     android:textSize="18dp" />
             </com.google.android.material.textfield.TextInputLayout>
         </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardView0"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:cardUseCompatPadding="true"
+            app:strokeWidth="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text2"
+            app:strokeColor="@color/bg_load">
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:hintEnabled="false"
+                app:placeholderTextColor="@color/bg_load">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/username"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/white"
+                    android:fontFamily="@font/jost_regular"
+                    android:hint="@string/username"
+                    android:paddingStart="12dp"
+                    android:paddingTop="15dp"
+                    android:textColor="@color/bg_load"
+                    android:textSize="18dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView2"
             android:layout_width="300dp"
@@ -153,10 +186,39 @@
             </com.google.android.material.textfield.TextInputLayout>
         </com.google.android.material.card.MaterialCardView>
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/imageloader"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_style"
+            android:fontFamily="@font/jost_medium"
+            android:text="Photo"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView3">
+
+        </androidx.appcompat.widget.AppCompatButton>
+        <TextView
+            android:id="@+id/pathimageuri"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="123"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageloader"
+            >
+
+        </TextView>
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/logBtn"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="50dp"
             android:background="@drawable/btn_style"
             android:fontFamily="@font/jost_medium"
             android:text="Create Account"
@@ -166,7 +228,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView2">
+            app:layout_constraintTop_toBottomOf="@+id/imageloader">
 
         </androidx.appcompat.widget.AppCompatButton>
 

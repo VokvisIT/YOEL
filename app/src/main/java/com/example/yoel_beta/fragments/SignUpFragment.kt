@@ -1,7 +1,10 @@
 package com.example.yoel_beta.fragments
 
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +21,7 @@ import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 
 
 class SignUpFragment : Fragment() {
@@ -27,6 +31,9 @@ class SignUpFragment : Fragment() {
     private lateinit var db: FirebaseDatabase
     private lateinit var users: DatabaseReference
     private lateinit var navControl: NavController
+    private val GALLERY_REQUEST_CODE = 1
+    var photoUri: Uri? = null
+    val storageRef = FirebaseStorage.getInstance().reference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +48,22 @@ class SignUpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         init(view)
+        openFileManager()
         registerEvents()
+    }
+    private fun openFileManager() {
+        binding.imageloader.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, GALLERY_REQUEST_CODE)
+        }
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            photoUri = data?.data
+
+        }
     }
     private fun init(view: View){
         navControl= Navigation.findNavController(view)
@@ -54,21 +76,43 @@ class SignUpFragment : Fragment() {
             navControl.navigate(R.id.action_signUpFragment_to_signInFragment2)
         }
         binding.logBtn.setOnClickListener{
+            val username = binding.username.text.toString().trim()
             val email = binding.emailEt.text.toString().trim()
             val pass = binding.passEt.text.toString().trim()
             val veriyPass = binding.verifyPassEt.text.toString().trim()
+            val photoRef = storageRef.child("photos/$username-image.jpg")
+            if (photoUri != null) {
+                val uploadTask = photoRef.putFile(photoUri!!)
+                uploadTask.continueWithTask { task ->
+                    if (!task.isSuccessful) {
+                        throw task.exception!!
+                    }
+                    // Получение ссылки на загруженный файл
+                    photoRef.downloadUrl
+                }.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        // Получение ссылки на загруженный файл
+                        val downloadUrl = task.result
 
+                        users.child("photoUrl").setValue(downloadUrl.toString())
+                    }
+                }
+            }
             if (email.isNotEmpty() && pass.isNotEmpty() && veriyPass.isNotEmpty()){
                 if (pass == veriyPass){
                     auth.createUserWithEmailAndPassword(email, pass).addOnSuccessListener(
                         OnSuccessListener {
-                            var user = User(email, pass, 0)
+                            var user = User(
+                                username = username,
+                                email = email,
+                                pass = pass,
+                                exp = 0)
                             users.child(auth.currentUser!!.uid)
                                 .setValue(user)
                                 .addOnCompleteListener(
                                     OnCompleteListener {
                                         if (it.isSuccessful){
-                                            Toast.makeText(context, "Registered Successfully", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(context, "Registered Successfully $username", Toast.LENGTH_SHORT).show()
                                             val intent = Intent(activity, HomeActivity::class.java)
                                             startActivity(intent)
                                         }else{

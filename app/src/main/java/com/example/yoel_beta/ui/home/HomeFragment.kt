@@ -47,7 +47,7 @@ class HomeFragment : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val user = dataSnapshot.getValue(User::class.java)
                 Log.d("TAG1", "///////////////////////////////")
-                binding.homeUsername.text = user?.getExp().toString() + user?.getPass().toString()
+                binding.homeUsername.text = user?.getUsername().toString()
                 Log.d("TAG2", "///////////////////////////////")
             }
 
