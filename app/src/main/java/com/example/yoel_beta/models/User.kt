@@ -24,11 +24,11 @@ data class User @JvmOverloads constructor(
         username = newUsername
     }
     // Геттер для свойства ImageUrl
-    fun getImageUrl(): String {
+    fun getImageurl(): String {
         return imageurl
     }
     // Сеттер для свойства ImageUrl
-    fun setImageUrl(newImageUrl: String) {
+    fun setImageurl(newImageUrl: String) {
         imageurl = newImageUrl
     }
     // Геттер для свойства email

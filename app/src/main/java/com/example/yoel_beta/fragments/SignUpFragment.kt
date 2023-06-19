@@ -82,7 +82,7 @@ class SignUpFragment : Fragment() {
             val pass = binding.passEt.text.toString().trim()
             val veriyPass = binding.verifyPassEt.text.toString().trim()
             val photoRef = storageRef.child("photos/$username-image.jpeg")
-            var imageUrl: String? = null
+            var imageUrl: String = ""
             if (photoUri != null) {
                 val uploadTask = photoRef.putFile(photoUri!!)
                 uploadTask.continueWithTask { task ->
@@ -95,37 +95,53 @@ class SignUpFragment : Fragment() {
                     if (task.isSuccessful) {
                         // Получение ссылки на загруженный файл
                         imageUrl = task.result.toString()
-                        Toast.makeText(context, "Фото: ${imageUrl.toString()}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Фото: ${imageUrl.toString()}", Toast.LENGTH_SHORT)
+                            .show()
+
+                        // Здесь вы можете продолжить выполнение кода, который требует значения imageUrl, например, сохранение пользователя в базе данных
+                        if (email.isNotEmpty() && pass.isNotEmpty() && veriyPass.isNotEmpty()) {
+                            if (pass == veriyPass) {
+                                auth.createUserWithEmailAndPassword(email, pass)
+                                    .addOnSuccessListener(
+                                        OnSuccessListener {
+                                            var user = User(
+                                                username = username,
+                                                imageurl = imageUrl.toString(),
+                                                email = email,
+                                                pass = pass,
+                                                exp = 0
+                                            )
+                                            users.child(auth.currentUser!!.uid)
+                                                .setValue(user)
+                                                .addOnCompleteListener(
+                                                    OnCompleteListener {
+                                                        if (it.isSuccessful) {
+                                                            Toast.makeText(
+                                                                context,
+                                                                "Registered Successfully $username",
+                                                                Toast.LENGTH_SHORT
+                                                            ).show()
+                                                            val intent = Intent(
+                                                                activity,
+                                                                HomeActivity::class.java
+                                                            )
+                                                            startActivity(intent)
+                                                        } else {
+                                                            Toast.makeText(
+                                                                context,
+                                                                it.exception?.message,
+                                                                Toast.LENGTH_SHORT
+                                                            ).show()
+                                                        }
+                                                    }
+                                                )
+                                        }
+                                    )
+                            }
+                        }
                     } else {
                         Toast.makeText(context, "Фото НЕ ЗАГРУЗИЛОСЬ", Toast.LENGTH_SHORT).show()
                     }
-                }
-            }
-            if (email.isNotEmpty() && pass.isNotEmpty() && veriyPass.isNotEmpty()){
-                if (pass == veriyPass){
-                    auth.createUserWithEmailAndPassword(email, pass).addOnSuccessListener(
-                        OnSuccessListener {
-                            var user = User(
-                                username = username,
-                                imageurl = imageUrl.toString(),
-                                email = email,
-                                pass = pass,
-                                exp = 0)
-                            users.child(auth.currentUser!!.uid)
-                                .setValue(user)
-                                .addOnCompleteListener(
-                                    OnCompleteListener {
-                                        if (it.isSuccessful){
-                                            Toast.makeText(context, "Registered Successfully $username", Toast.LENGTH_SHORT).show()
-                                            val intent = Intent(activity, HomeActivity::class.java)
-                                            startActivity(intent)
-                                        }else{
-                                            Toast.makeText(context, it.exception?.message, Toast.LENGTH_SHORT).show()
-                                        }
-                                    }
-                                )
-                        }
-                    )
                 }
             }
         }
