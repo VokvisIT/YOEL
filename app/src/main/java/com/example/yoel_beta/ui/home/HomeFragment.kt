@@ -1,5 +1,6 @@
 package com.example.yoel_beta.ui.home
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -48,6 +49,7 @@ class HomeFragment : Fragment() {
                 val user = dataSnapshot.getValue(User::class.java)
                 Log.d("TAG1", "///////////////////////////////")
                 binding.homeUsername.text = user?.getUsername().toString()
+                binding.imageUsername.setImageURI(Uri.parse(user?.getImageUrl().toString()))
                 Log.d("TAG2", "///////////////////////////////")
             }
 

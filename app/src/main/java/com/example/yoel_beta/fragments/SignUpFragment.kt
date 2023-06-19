@@ -62,6 +62,7 @@ class SignUpFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             photoUri = data?.data
+            binding.pathimageuri.text = photoUri.toString()
 
         }
     }
@@ -80,7 +81,8 @@ class SignUpFragment : Fragment() {
             val email = binding.emailEt.text.toString().trim()
             val pass = binding.passEt.text.toString().trim()
             val veriyPass = binding.verifyPassEt.text.toString().trim()
-            val photoRef = storageRef.child("photos/$username-image.jpg")
+            val photoRef = storageRef.child("photos/$username-image.jpeg")
+            var imageUrl: String? = null
             if (photoUri != null) {
                 val uploadTask = photoRef.putFile(photoUri!!)
                 uploadTask.continueWithTask { task ->
@@ -92,9 +94,10 @@ class SignUpFragment : Fragment() {
                 }.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         // Получение ссылки на загруженный файл
-                        val downloadUrl = task.result
-
-                        users.child("photoUrl").setValue(downloadUrl.toString())
+                        imageUrl = task.result.toString()
+                        Toast.makeText(context, "Фото: ${imageUrl.toString()}", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "Фото НЕ ЗАГРУЗИЛОСЬ", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -104,6 +107,7 @@ class SignUpFragment : Fragment() {
                         OnSuccessListener {
                             var user = User(
                                 username = username,
+                                imageurl = imageUrl.toString(),
                                 email = email,
                                 pass = pass,
                                 exp = 0)

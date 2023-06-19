@@ -2,6 +2,7 @@ package com.example.yoel_beta.models
 
 data class User @JvmOverloads constructor(
     private var username: String = "",
+    private var imageurl: String = "",
     private var email: String = "",
     private var pass: String = "",
     private var exp: Int = 0,
@@ -9,6 +10,7 @@ data class User @JvmOverloads constructor(
     // Конструктор
     init {
         this.username = username
+        this.imageurl = imageurl
         this.email = email
         this.pass = pass
         this.exp = exp
@@ -17,10 +19,17 @@ data class User @JvmOverloads constructor(
     fun getUsername(): String {
         return username
     }
-
     // Сеттер для свойства Username
     fun setUsername(newUsername: String) {
         username = newUsername
+    }
+    // Геттер для свойства ImageUrl
+    fun getImageUrl(): String {
+        return imageurl
+    }
+    // Сеттер для свойства ImageUrl
+    fun setImageUrl(newImageUrl: String) {
+        imageurl = newImageUrl
     }
     // Геттер для свойства email
     fun getEmail(): String {
