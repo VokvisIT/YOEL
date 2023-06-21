@@ -20,6 +20,7 @@ class FirebaseModel(private val application: Application) {
         return userLoggedMutableLiveData
     }
 
+
     init {
         firebaseUserMutableLiveData.value = auth.currentUser
 

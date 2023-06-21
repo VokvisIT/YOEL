@@ -3,6 +3,7 @@ package com.example.yoel_beta.fragments
 import android.app.Application
 import androidx.annotation.NonNull
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.yoel_beta.models.FirebaseModel
 import com.google.firebase.auth.FirebaseUser
@@ -24,4 +25,5 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     fun signOut() {
         repository.signOut()
     }
+
 }

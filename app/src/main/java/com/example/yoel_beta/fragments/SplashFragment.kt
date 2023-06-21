@@ -8,34 +8,31 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.yoel_beta.HomeActivity
 import com.example.yoel_beta.R
-import com.google.firebase.auth.FirebaseAuth
 
 
 class SplashFragment : Fragment() {
-    private lateinit var auth: FirebaseAuth
     private lateinit var navController: NavController
-
+    private lateinit var viewModel: AuthViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_splash, container, false)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         init(view)
-//        val isLogin: Boolean = mAuth.currentUser != null
-
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)).get(AuthViewModel::class.java
+        )
         Handler(Looper.myLooper()!!).postDelayed({
-            if (auth.currentUser != null){
-//                navController.navigate(R.id.action_splashFragment_to_homeFragment)
+            if (viewModel.userData.value != null){
                 val intent = Intent(activity, HomeActivity::class.java)
                 startActivity(intent)
             }else{
@@ -45,8 +42,6 @@ class SplashFragment : Fragment() {
     }
 
     private fun init(view: View) {
-
-        auth = FirebaseAuth.getInstance()
         navController = Navigation.findNavController(view)
     }
 }
