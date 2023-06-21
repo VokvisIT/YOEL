@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.yoel_beta.databinding.FragmentHomeBinding
 import com.example.yoel_beta.models.User
@@ -22,15 +23,11 @@ import com.example.yoel_beta.HomeActivity
 import com.example.yoel_beta.fragments.AuthViewModel
 
 class HomeFragment : Fragment() {
-    private lateinit var viewmodel: AuthViewModel
-    private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseDatabase
-    private lateinit var users: DatabaseReference
-    private var _binding: FragmentHomeBinding? = null
+    private lateinit var viewModel: AuthViewModel
+    private lateinit var binding: FragmentHomeBinding
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,48 +36,38 @@ class HomeFragment : Fragment() {
     ): View {
         val homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        init()
-
-
-        users.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val user = dataSnapshot.getValue(User::class.java)
-                binding.homeUsername.text = user?.getUsername().toString() + " " + user?.getExp().toString()
-                val srcurl = user?.getImageurl().toString()
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)).get(AuthViewModel::class.java
+        )
+        viewModel.userinfo.observe(viewLifecycleOwner, Observer { userInfo ->
+            if (userInfo is Map<*, *>) { // Проверяем, что userInfo является Map
+                val name = userInfo["name"] as String
+                val imageUrl = userInfo["imageurl"] as String
+                val expLevel = userInfo["explvl"] as Int
+                val expCurrent = userInfo["expcurrent"] as Int
+                val exp = userInfo["exp"] as Int
+                binding.homeUsername.text = name
                 Glide.with(this@HomeFragment)
-                    .load(srcurl)
+                    .load(imageUrl)
                     .into(binding.imageUsername)
-                Toast.makeText(
-                    context,
-                    "Photo Successfully $srcurl",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+                var result: Double = (exp.toDouble() / expCurrent)*100
+                Toast.makeText(context, "$expLevel $expCurrent $exp $result", Toast.LENGTH_SHORT).show()
+                binding.circularProgressIndicator.setProgressCompat(result.toInt(), true)
+                binding.exp.text = exp.toString()
+                binding.expcurrent.text = expCurrent.toString()
+                binding.lvl.text = expLevel.toString()
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Обработка ошибок чтения данных
+
             }
         })
 
-    }
-
-    private fun init() {
-        auth = FirebaseAuth.getInstance()
-        db = FirebaseDatabase.getInstance()
-        val uid:String = auth.currentUser?.uid.toString()
-        users = db.getReference("Users/$uid")
-    }
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
