@@ -29,7 +29,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/jost_medium"
-            android:text="Artlas"
             android:textColor="@color/black"
             android:textSize="25sp" />
     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -38,7 +37,7 @@
         android:id="@+id/circularProgressIndicator"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="60dp"
         app:indicatorColor="@color/bg_load"
         app:indicatorDirectionCircular="clockwise"
         app:indicatorSize="200dp"
@@ -70,13 +69,14 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/linearLayoutCompat2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
 
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayoutCompat"
         app:layout_constraintEnd_toEndOf="@+id/linearLayoutCompat"
-        app:layout_constraintStart_toStartOf="@+id/linearLayoutCompat"
 
+        app:layout_constraintStart_toStartOf="@+id/linearLayoutCompat"
         tools:ignore="MissingConstraints">
 
         <TextView
@@ -86,6 +86,7 @@
             android:fontFamily="@font/jost_regular"
             android:textColor="@color/homelvl"
             android:textSize="13sp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -102,6 +103,15 @@
             android:textColor="@color/homelvl"
             android:textSize="13sp" />
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/circularProgressIndicator" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

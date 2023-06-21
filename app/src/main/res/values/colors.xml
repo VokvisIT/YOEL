@@ -7,7 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    0A1727
+    FFC618
     <color name="homelvl">#0A1727</color>
     <color name="bg_load">#5E5DFD</color>
+    <color name="star">#FFC618</color>
 </resources>
