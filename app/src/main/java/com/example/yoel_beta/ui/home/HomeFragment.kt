@@ -19,8 +19,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.bumptech.glide.Glide
 import com.example.yoel_beta.HomeActivity
+import com.example.yoel_beta.fragments.AuthViewModel
 
 class HomeFragment : Fragment() {
+    private lateinit var viewmodel: AuthViewModel
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseDatabase
     private lateinit var users: DatabaseReference
