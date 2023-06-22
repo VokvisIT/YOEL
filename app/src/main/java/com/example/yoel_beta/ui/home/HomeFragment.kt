@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -52,10 +51,10 @@ class HomeFragment : Fragment() {
                 binding.lvl.text = expLevel.toString()
             }
         })
-        viewModel.activTaskList.observe(viewLifecycleOwner, Observer {
+        viewModel.taskList.observe(viewLifecycleOwner, Observer {
             if (::viewModel.isInitialized) { // Проверка на инициализацию viewmodel
                 binding.tasksRv.layoutManager = LinearLayoutManager(context)
-                val taskModels = viewModel.activTaskList // Получите список задач из вашей модели FirebaseModel
+                val taskModels = viewModel.taskList // Получите список задач из вашей модели FirebaseModel
                 val taskAdapter = TaskAdapter(taskModels, viewModel)
                 binding.tasksRv.adapter = taskAdapter
             }

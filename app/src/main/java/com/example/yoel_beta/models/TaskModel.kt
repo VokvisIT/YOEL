@@ -1,5 +1,7 @@
 package com.example.yoel_beta.models
 
+import com.google.firebase.database.ServerValue
+
 
 data class TaskModel @JvmOverloads constructor(
     private var taskId: String,
@@ -7,9 +9,10 @@ data class TaskModel @JvmOverloads constructor(
     private var exp_task: Int,
     private var dataComp: Long,
     private var break_time: Float?,
-    private var statusTask: Boolean
+    private var statusTask: Boolean,
+    private var nowTime: Long,
 ) {
-    constructor() : this("","", 0, 0L, null, true)
+    constructor() : this("","", 0, 0L, null, true, 0L)
     // Геттеры
     fun getTaskId(): String {
         return taskId
@@ -32,6 +35,9 @@ data class TaskModel @JvmOverloads constructor(
 
     fun getStatusTask(): Boolean {
         return statusTask
+    }
+    fun getNowTime():Long{
+        return nowTime
     }
 
     // Сеттеры

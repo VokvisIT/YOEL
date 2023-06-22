@@ -13,7 +13,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: FirebaseModel = FirebaseModel(application)
     val userData: MutableLiveData<FirebaseUser> = repository.getFirebaseUserMutableLiveData()
     val userinfo: MutableLiveData<Any> = repository.getUserInfoMutableLiveData()
-    val activTaskList: MutableLiveData<List<TaskModel>> = repository.getTaskListMutableLiveData(true)
+    val taskList: MutableLiveData<List<TaskModel>> = repository.getTaskListMutableLiveData()
     val loggedStatus: MutableLiveData<Boolean> = repository.getUserLoggedMutableLiveData()
     fun signIn(email: String, pass: String) {
         repository.login(email, pass)

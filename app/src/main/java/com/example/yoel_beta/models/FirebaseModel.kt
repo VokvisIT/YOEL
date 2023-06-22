@@ -2,6 +2,7 @@ package com.example.yoel_beta.models
 
 import android.app.Application
 import android.net.Uri
+import android.os.Handler
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.OnSuccessListener
@@ -23,13 +24,13 @@ class FirebaseModel(private val application: Application) {
     private val firebaseUserMutableLiveData = MutableLiveData<FirebaseUser>()
     private val userLoggedMutableLiveData = MutableLiveData<Boolean>()
     private val userInfoMutableLiveData = MutableLiveData<Any>()
-    private val activTaskModelListMutableLiveData = MutableLiveData<List<TaskModel>>()
-    private val nonActivTaskModelListMutableLiveData = MutableLiveData<List<TaskModel>>()
+    private val taskModelListMutableLiveData = MutableLiveData<List<TaskModel>>()
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private var db: FirebaseDatabase
     private val users: DatabaseReference
     val storageRef = FirebaseStorage.getInstance().reference
     private var tasks: DatabaseReference
+
 
     fun getFirebaseUserMutableLiveData(): MutableLiveData<FirebaseUser> {
         return firebaseUserMutableLiveData
@@ -38,36 +39,36 @@ class FirebaseModel(private val application: Application) {
     fun getUserLoggedMutableLiveData(): MutableLiveData<Boolean> {
         return userLoggedMutableLiveData
     }
-    fun getTaskListMutableLiveData(listtype: Boolean): MutableLiveData<List<TaskModel>> {
+    fun getTaskListMutableLiveData(): MutableLiveData<List<TaskModel>> {
+
         val uid = auth.currentUser?.uid.toString()
         val userTasksRef = tasks.child(uid)
+        val taskModelListMutableLiveData = MutableLiveData<List<TaskModel>>()
+
         userTasksRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                activTaskModelListMutableLiveData.value = listOf()
-                nonActivTaskModelListMutableLiveData.value = listOf()
+                val taskModelList = mutableListOf<TaskModel>()
+
                 for (taskSnapshot in snapshot.children) {
                     val task = taskSnapshot.getValue(TaskModel::class.java)
-                    if(task!!.getStatusTask() == true){
-                        activTaskModelListMutableLiveData.value = activTaskModelListMutableLiveData.value?.plus(
-                            task
-                        )
-                    } else {
-                        nonActivTaskModelListMutableLiveData.value = nonActivTaskModelListMutableLiveData.value?.plus(
-                            task
-                        )
+                    task?.let {
+                        taskModelList.add(it)
                     }
                 }
-            }
-            override fun onCancelled(error: DatabaseError) {
 
+                // Sort the taskModelList based on the statusTask value
+                val sortedList = taskModelList.sortedByDescending { it.getStatusTask() }
+
+                taskModelListMutableLiveData.value = sortedList
+            }
+
+            override fun onCancelled(error: DatabaseError) {
             }
         })
-        return if(listtype){
-            activTaskModelListMutableLiveData
-        }else{
-            nonActivTaskModelListMutableLiveData
-        }
+
+        return taskModelListMutableLiveData
     }
+
     fun getUserInfoMutableLiveData():MutableLiveData<Any>{
         val uid:String = auth.currentUser?.uid.toString()
         var users = db.getReference("Users/$uid")
@@ -96,6 +97,7 @@ class FirebaseModel(private val application: Application) {
         users = db.getReference("Users")
         tasks = db.getReference("Tasks")
         if (auth.currentUser != null) {
+            updateNowTimeForAllTasks()
             firebaseUserMutableLiveData.postValue(auth.currentUser)
         }
     }
@@ -158,6 +160,7 @@ class FirebaseModel(private val application: Application) {
             dataComp = 0,
             break_time = break_time,
             statusTask = status_task,
+            nowTime = 0L
         )
         val newTaskRef = tasks.child(auth.currentUser!!.uid).push() // Создание нового узла для каждой задачи
         val taskId = newTaskRef.key // Получение уникального идентификатора задачи
@@ -205,4 +208,30 @@ class FirebaseModel(private val application: Application) {
             }
         })
     }
+    fun updateNowTimeForAllTasks() {
+        val uid = auth.currentUser?.uid.toString()
+        val userTasksRef = tasks.child(uid)
+
+        userTasksRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (taskSnapshot in snapshot.children) {
+                    val taskId = taskSnapshot.key.toString()
+                    val taskRef = userTasksRef.child(taskId)
+                    taskRef.child("nowTime").setValue(ServerValue.TIMESTAMP)
+                        .addOnCompleteListener { taskSnapshot ->
+                            if (taskSnapshot.isSuccessful) {
+                                // Обработка успешного обновления nowTime
+                            } else {
+                                // Обработка ошибки при обновлении nowTime
+                            }
+                        }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Обработка ошибки чтения задач из базы данных
+            }
+        })
+    }
+
 }

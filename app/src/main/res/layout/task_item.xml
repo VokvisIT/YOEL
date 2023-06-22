@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_rv"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="8dp"
-    app:cardElevation="10dp"
+    app:cardElevation="5dp"
     app:cardUseCompatPadding="true">
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -17,7 +18,8 @@
         <CheckBox
             android:id="@+id/round_checkbox"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            />
 
         <TextView
             android:id="@+id/task_title"
@@ -27,6 +29,7 @@
             android:maxHeight="100dp"
             android:fontFamily="@font/jost_regular"
             android:text="123"
+
             android:textColor="@color/homelvl"
             android:textSize="16sp" />
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -70,6 +73,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
+                        android:id="@+id/break_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/jost_medium"
@@ -84,7 +88,6 @@
                     app:indicatorColor="@color/bg_load"
                     app:indicatorDirectionCircular="clockwise"
                     app:indicatorSize="25dp"
-                    android:progress="60"
                     app:trackColor="#A4A4FF"
                     app:trackThickness="5dp"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
