@@ -201,24 +201,12 @@
             app:layout_constraintTop_toBottomOf="@+id/cardView3">
 
         </androidx.appcompat.widget.AppCompatButton>
-        <TextView
-            android:id="@+id/pathimageuri"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="123"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageloader"
-            >
 
-        </TextView>
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/logBtn"
+            android:layout_marginTop="50dp"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
             android:background="@drawable/btn_style"
             android:fontFamily="@font/jost_medium"
             android:text="Create Account"
@@ -228,7 +216,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pathimageuri">
+            app:layout_constraintTop_toBottomOf="@+id/imageloader">
 
         </androidx.appcompat.widget.AppCompatButton>
 

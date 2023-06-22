@@ -73,7 +73,6 @@ class SignUpFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             photoUri = data?.data
-            binding.pathimageuri.text = photoUri.toString()
         }
     }
 }
