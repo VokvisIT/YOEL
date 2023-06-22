@@ -38,7 +38,6 @@ class SignInFragment : Fragment() {
         )
         viewModel.userData.observe(viewLifecycleOwner, Observer { firebaseUser ->
             if (firebaseUser != null) {
-                Toast.makeText(context, "Login Successfully", Toast.LENGTH_SHORT).show()
                 val intent = Intent(activity, HomeActivity::class.java)
                 startActivity(intent)
             }

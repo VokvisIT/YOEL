@@ -20,6 +20,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
+            android:id="@+id/task_title"
             android:layout_width="wrap_content"
             android:maxWidth="170dp"
             android:layout_height="wrap_content"
@@ -44,6 +45,7 @@
                 android:background="@drawable/star_exp">
 
                 <TextView
+                    android:id="@+id/exp_task"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/jost_medium"
@@ -88,7 +90,7 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/delTask"
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/baseline_close_24" />

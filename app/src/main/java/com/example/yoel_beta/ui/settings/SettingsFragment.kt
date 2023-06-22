@@ -21,8 +21,7 @@ class SettingsFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
 
 private var _binding: FragmentSettingsBinding? = null
-  // This property is only valid between onCreateView and
-  // onDestroyView.
+
   private val binding get() = _binding!!
 
   override fun onCreateView(
@@ -30,8 +29,6 @@ private var _binding: FragmentSettingsBinding? = null
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    val settingsViewModel =
-            ViewModelProvider(this).get(SettingsViewModel::class.java)
 
     _binding = FragmentSettingsBinding.inflate(inflater, container, false)
     val root: View = binding.root

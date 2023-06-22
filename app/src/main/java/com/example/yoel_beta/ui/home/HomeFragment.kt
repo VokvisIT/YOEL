@@ -1,8 +1,6 @@
 package com.example.yoel_beta.ui.home
 
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,32 +8,21 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.yoel_beta.databinding.FragmentHomeBinding
-import com.example.yoel_beta.models.User
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.bumptech.glide.Glide
-import com.example.yoel_beta.HomeActivity
 import com.example.yoel_beta.fragments.AuthViewModel
+import com.example.yoel_beta.models.TaskAdapter
 
 class HomeFragment : Fragment() {
     private lateinit var viewModel: AuthViewModel
     private lateinit var binding: FragmentHomeBinding
-
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
         return root
@@ -59,15 +46,19 @@ class HomeFragment : Fragment() {
                     .load(imageUrl)
                     .into(binding.imageUsername)
                 var result: Double = (exp.toDouble() / expCurrent)*100
-                Toast.makeText(context, "$expLevel $expCurrent $exp $result", Toast.LENGTH_SHORT).show()
                 binding.circularProgressIndicator.setProgressCompat(result.toInt(), true)
                 binding.exp.text = exp.toString()
                 binding.expcurrent.text = expCurrent.toString()
                 binding.lvl.text = expLevel.toString()
-
-
             }
         })
-
+        viewModel.activTaskList.observe(viewLifecycleOwner, Observer {
+            if (::viewModel.isInitialized) { // Проверка на инициализацию viewmodel
+                binding.tasksRv.layoutManager = LinearLayoutManager(context)
+                val taskModels = viewModel.activTaskList // Получите список задач из вашей модели FirebaseModel
+                val taskAdapter = TaskAdapter(taskModels, viewModel)
+                binding.tasksRv.adapter = taskAdapter
+            }
+        })
     }
 }

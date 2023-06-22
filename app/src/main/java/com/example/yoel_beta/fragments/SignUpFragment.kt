@@ -62,8 +62,6 @@ class SignUpFragment : Fragment() {
             val email = binding.emailEt.text.toString().trim()
             val pass = binding.passEt.text.toString().trim()
             val veryPass = binding.verifyPassEt.text.toString().trim()
-            var imageUrl: String = ""
-
             if (email.isNotEmpty() && pass.isNotEmpty() && veryPass.isNotEmpty()) {
                 if (pass == veryPass) {
                     viewModel.register(email, pass, photoUri!!, username)

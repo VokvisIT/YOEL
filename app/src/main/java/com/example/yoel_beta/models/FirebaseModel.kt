@@ -1,10 +1,9 @@
 package com.example.yoel_beta.models
+
 import android.app.Application
 import android.net.Uri
 import android.widget.Toast
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
@@ -14,14 +13,18 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ServerValue
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
-import kotlin.collections.List as CollectionsList
+import java.util.Calendar
+import java.util.Date
 
 class FirebaseModel(private val application: Application) {
     private val firebaseUserMutableLiveData = MutableLiveData<FirebaseUser>()
     private val userLoggedMutableLiveData = MutableLiveData<Boolean>()
     private val userInfoMutableLiveData = MutableLiveData<Any>()
+    private val activTaskModelListMutableLiveData = MutableLiveData<List<TaskModel>>()
+    private val nonActivTaskModelListMutableLiveData = MutableLiveData<List<TaskModel>>()
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private var db: FirebaseDatabase
     private val users: DatabaseReference
@@ -34,6 +37,36 @@ class FirebaseModel(private val application: Application) {
 
     fun getUserLoggedMutableLiveData(): MutableLiveData<Boolean> {
         return userLoggedMutableLiveData
+    }
+    fun getTaskListMutableLiveData(listtype: Boolean): MutableLiveData<List<TaskModel>> {
+        val uid = auth.currentUser?.uid.toString()
+        val userTasksRef = tasks.child(uid)
+        userTasksRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                activTaskModelListMutableLiveData.value = listOf()
+                nonActivTaskModelListMutableLiveData.value = listOf()
+                for (taskSnapshot in snapshot.children) {
+                    val task = taskSnapshot.getValue(TaskModel::class.java)
+                    if(task!!.getStatusTask() == true){
+                        activTaskModelListMutableLiveData.value = activTaskModelListMutableLiveData.value?.plus(
+                            task
+                        )
+                    } else {
+                        nonActivTaskModelListMutableLiveData.value = nonActivTaskModelListMutableLiveData.value?.plus(
+                            task
+                        )
+                    }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+        return if(listtype){
+            activTaskModelListMutableLiveData
+        }else{
+            nonActivTaskModelListMutableLiveData
+        }
     }
     fun getUserInfoMutableLiveData():MutableLiveData<Any>{
         val uid:String = auth.currentUser?.uid.toString()
@@ -53,7 +86,6 @@ class FirebaseModel(private val application: Application) {
                 userInfoMutableLiveData.value = dictionary
             }
             override fun onCancelled(databaseError: DatabaseError) {
-                Toast.makeText(application, databaseError?.message, Toast.LENGTH_SHORT).show()
             }
         })
         return userInfoMutableLiveData
@@ -67,7 +99,6 @@ class FirebaseModel(private val application: Application) {
             firebaseUserMutableLiveData.postValue(auth.currentUser)
         }
     }
-
     fun register(email: String, pass: String, username: String, imageUrl: String) {
         auth.createUserWithEmailAndPassword(email, pass)
             .addOnSuccessListener(
@@ -85,7 +116,6 @@ class FirebaseModel(private val application: Application) {
                             if (task.isSuccessful) {
                                 firebaseUserMutableLiveData.postValue(auth.currentUser)
                             } else {
-                                Toast.makeText(application, task.exception?.message, Toast.LENGTH_SHORT).show()
                             }
                         }
                 }
@@ -98,11 +128,9 @@ class FirebaseModel(private val application: Application) {
                 if (task.isSuccessful) {
                     firebaseUserMutableLiveData.postValue(auth.currentUser)
                 } else {
-                    Toast.makeText(application, task.exception?.message, Toast.LENGTH_SHORT).show()
                 }
             }
     }
-
     fun signOut() {
         auth.signOut()
         userLoggedMutableLiveData.postValue(true)
@@ -110,7 +138,7 @@ class FirebaseModel(private val application: Application) {
     fun reguser(url: Uri, username: String, email: String, pass: String) {
         val photoRef = storageRef.child("photos/$username-image.jpeg")
         val uploadTask = photoRef.putFile(url!!)
-        var imageUrl: String = ""
+        var imageUrl = ""
         uploadTask.continueWithTask { task ->
             if (!task.isSuccessful) { throw task.exception!! }
             photoRef.downloadUrl
@@ -119,39 +147,62 @@ class FirebaseModel(private val application: Application) {
                 imageUrl = task.result.toString()
                 register(email, pass, username, imageUrl)
             } else {
-                Toast.makeText(application, "Фото НЕ ЗАГРУЗИЛОСЬ", Toast.LENGTH_SHORT).show()
             }
         }
     }
-    fun addTask(title:String, exp_task:Int, data_comp:Long, break_time: Float, status_task: Boolean){
-
-        val task = Task(
+    fun addTask(title:String, exp_task:Int, break_time: Float, status_task: Boolean){
+        val taskModel = TaskModel(
+            taskId = "",
             title = title,
             exp_task = exp_task,
-            data_comp = data_comp,
+            dataComp = 0,
             break_time = break_time,
-            status_task = status_task,
+            statusTask = status_task,
         )
-        tasks.child(auth.currentUser!!.uid)
-            .push() // Создание нового узла для каждой задачи
-            .setValue(task)
-            .addOnCompleteListener { taskSnapshot ->
-                if (taskSnapshot.isSuccessful) {
-                    Toast.makeText(
-                        application,
-                        "Created Task: $title",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    Toast.makeText(
-                        application,
-                        taskSnapshot.exception?.message,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+        val newTaskRef = tasks.child(auth.currentUser!!.uid).push() // Создание нового узла для каждой задачи
+        val taskId = newTaskRef.key // Получение уникального идентификатора задачи
+        taskModel.setTaskId(taskId.toString()) // Присваиваем уникальный идентификатор задачи в модели задачи
+        newTaskRef.setValue(taskModel).addOnCompleteListener { taskSnapshot ->
+                if (taskSnapshot.isSuccessful) { } else { }
             }
     }
-    fun getUserInfo(){
-
+    fun removeTask(taskId: String){
+        val taskRef = tasks.child(auth.currentUser!!.uid).child(taskId)
+        taskRef.removeValue()
+            .addOnCompleteListener { taskSnapshot ->
+                if (taskSnapshot.isSuccessful) { } else { }
+            }
+    }
+    fun setStatusTask(taskId: String, taskExp: Int){
+        val taskRef = tasks.child(auth.currentUser!!.uid).child(taskId)
+        val calendar: Calendar = Calendar.getInstance()
+        val dataC: Date = calendar.time
+        taskRef.child("statusTask").setValue(false)
+            .addOnCompleteListener { taskSnapshot ->
+                if (taskSnapshot.isSuccessful) {
+                    taskRef.child("dataComp").setValue(ServerValue.TIMESTAMP)
+                        .addOnCompleteListener { taskSnapshot ->
+                            if (taskSnapshot.isSuccessful) {} else {}
+                        }
+                } else {}
+            }
+        setUserExp(taskExp)
+    }
+    fun setUserExp(exp: Int) {
+        val uid = auth.currentUser?.uid
+        val userRef = db.getReference("Users/$uid")
+        userRef.child("exp").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val currentExp = dataSnapshot.getValue(Int::class.java) ?: 0
+                val newExp = currentExp + exp
+                userRef.child("exp").setValue(newExp)
+                    .addOnCompleteListener { taskSnapshot ->
+                        if (taskSnapshot.isSuccessful) {} else {}
+                    }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                Toast.makeText(application, databaseError.message, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

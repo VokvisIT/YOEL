@@ -104,14 +104,23 @@
             android:textSize="13sp" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/line"
+        app:layout_constraintTop_toBottomOf="@+id/circularProgressIndicator"
+        tools:ignore="MissingConstraints" />
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="40dp"
+        android:id="@+id/tasks_rv"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:paddingBottom="50dp"
+        android:fadeScrollbars="true"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/circularProgressIndicator" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
