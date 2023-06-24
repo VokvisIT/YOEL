@@ -7,6 +7,7 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yoel_beta.R
@@ -38,18 +39,18 @@ class TaskAdapter(private val taskModels: MutableLiveData<List<TaskModel>>,
         private val deltaskbtn: ImageView = itemView.findViewById(R.id.delTask)
         private val card: MaterialCardView = itemView.findViewById(R.id.card_rv)
         private val timebreack: TextView = itemView.findViewById(R.id.break_time)
-        private val progressBar: ProgressBar = itemView.findViewById(R.id.progressbar)
+        private val progressBar = itemView.findViewById<ProgressBar>(R.id.progressbar)
         fun bind(taskModel: TaskModel) {
             // Привяжите данные задачи к элементам пользовательского интерфейса
-            if(taskModel.getStatusTask() == false){
+            if(!taskModel.getStatusTask()){
                 card.alpha = 0.5F
                 card.isClickable = false
                 checkboxflag.isChecked = true
                 checkboxflag.isClickable=false
-                var time1 = (taskModel.getBreakTime()!! -((taskModel.getNowTime().toFloat() - taskModel.getDataComp().toFloat())/3600000.0))
+                val time1 = (taskModel.getBreakTime()!! -((taskModel.getNowTime().toFloat() - taskModel.getDataComp().toFloat())/3600000.0))
                 val decimalFormat = DecimalFormat("#.#")
                 timebreack.text = decimalFormat.format(time1)
-                progressBar.progress = (((time1-taskModel.getBreakTime()!!)/taskModel.getBreakTime()!!)*100).toInt()
+                progressBar.progress =(((taskModel.getBreakTime()!!.toFloat() - decimalFormat.format(time1).toFloat())/taskModel.getBreakTime()!!)*100).roundToInt()
             }else{
                 timebreack.text = taskModel.getBreakTime().toString()
                 checkboxflag.setOnClickListener{
@@ -57,12 +58,11 @@ class TaskAdapter(private val taskModels: MutableLiveData<List<TaskModel>>,
                         authViewModel.setStatusTask(taskModel.getTaskId(), taskModel.getExpTask())
                     }
                 }
-
             }
             deltaskbtn.setOnClickListener {
                 authViewModel.delTask(taskModel.getTaskId())
             }
-            titleTextView.text = taskModel.getTitle().toString()
+            titleTextView.text = taskModel.getTitle()
             expTitleView.text = taskModel.getExpTask().toString()
 
         }

@@ -34,4 +34,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     fun setStatusTask(taskId:String, taskExp: Int){
         repository.setStatusTask(taskId, taskExp)
     }
+    fun updateTime(){
+        repository.updateNowTimeForAllTasks()
+    }
 }

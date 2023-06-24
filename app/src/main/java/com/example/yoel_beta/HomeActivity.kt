@@ -1,22 +1,27 @@
 package com.example.yoel_beta
 
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.yoel_beta.databinding.ActivityHomeBinding
+import com.example.yoel_beta.fragments.AuthViewModel
 
 class HomeActivity : AppCompatActivity() {
-
+    private lateinit var viewModel: AuthViewModel
 private lateinit var binding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         supportActionBar?.hide()
         supportActionBar?.setDisplayShowTitleEnabled(false)
+
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val navView: BottomNavigationView = binding.navView
@@ -28,5 +33,7 @@ private lateinit var binding: ActivityHomeBinding
             R.id.navigation_home, R.id.navigation_tasks, R.id.navigation_settings))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
     }
+
 }

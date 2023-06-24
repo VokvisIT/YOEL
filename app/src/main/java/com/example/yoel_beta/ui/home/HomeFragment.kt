@@ -52,9 +52,9 @@ class HomeFragment : Fragment() {
             }
         })
         viewModel.taskList.observe(viewLifecycleOwner, Observer {
-            if (::viewModel.isInitialized) { // Проверка на инициализацию viewmodel
+            if (::viewModel.isInitialized) {
                 binding.tasksRv.layoutManager = LinearLayoutManager(context)
-                val taskModels = viewModel.taskList // Получите список задач из вашей модели FirebaseModel
+                val taskModels = viewModel.taskList
                 val taskAdapter = TaskAdapter(taskModels, viewModel)
                 binding.tasksRv.adapter = taskAdapter
             }

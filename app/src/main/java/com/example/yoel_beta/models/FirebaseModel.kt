@@ -30,12 +30,9 @@ class FirebaseModel(private val application: Application) {
     private val users: DatabaseReference
     val storageRef = FirebaseStorage.getInstance().reference
     private var tasks: DatabaseReference
-
-
     fun getFirebaseUserMutableLiveData(): MutableLiveData<FirebaseUser> {
         return firebaseUserMutableLiveData
     }
-
     fun getUserLoggedMutableLiveData(): MutableLiveData<Boolean> {
         return userLoggedMutableLiveData
     }
@@ -68,7 +65,6 @@ class FirebaseModel(private val application: Application) {
 
         return taskModelListMutableLiveData
     }
-
     fun getUserInfoMutableLiveData():MutableLiveData<Any>{
         val uid:String = auth.currentUser?.uid.toString()
         var users = db.getReference("Users/$uid")
@@ -123,7 +119,6 @@ class FirebaseModel(private val application: Application) {
                 }
             )
     }
-
     fun login(email: String, pass: String) {
         auth.signInWithEmailAndPassword(email, pass)
             .addOnCompleteListener { task: Task<AuthResult> ->
@@ -211,7 +206,6 @@ class FirebaseModel(private val application: Application) {
     fun updateNowTimeForAllTasks() {
         val uid = auth.currentUser?.uid.toString()
         val userTasksRef = tasks.child(uid)
-
         userTasksRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (taskSnapshot in snapshot.children) {
@@ -220,18 +214,63 @@ class FirebaseModel(private val application: Application) {
                     taskRef.child("nowTime").setValue(ServerValue.TIMESTAMP)
                         .addOnCompleteListener { taskSnapshot ->
                             if (taskSnapshot.isSuccessful) {
-                                // Обработка успешного обновления nowTime
-                            } else {
-                                // Обработка ошибки при обновлении nowTime
-                            }
+                            } else { }
                         }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+        updateTaskValues()
+    }
+    fun updateTaskValues() {
+        val uid = auth.currentUser?.uid.toString()
+        val userTasksRef = tasks.child(uid)
+        userTasksRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (taskSnapshot in snapshot.children) {
+                    val taskId = taskSnapshot.key.toString()
+                    val taskRef = userTasksRef.child(taskId)
+                    taskRef.child("dataComp").addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(dataCompSnapshot: DataSnapshot) {
+                            val dataComp = dataCompSnapshot.getValue(Long::class.java)
+                            taskRef.child("breakTime").addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(breakTimeSnapshot: DataSnapshot) {
+                                    val breakTime = breakTimeSnapshot.getValue(Int::class.java)
+                                    taskRef.child("nowTime").addListenerForSingleValueEvent(object : ValueEventListener {
+                                        override fun onDataChange(nowTimeSnapshot: DataSnapshot) {
+                                            val nowTime = nowTimeSnapshot.getValue(Long::class.java)
+                                            if (nowTime != null && (nowTime - dataComp!!) > (breakTime!! * 3600000)) {
+                                                taskRef.child("statusTask").setValue(true)
+                                            } else {
+                                                taskRef.child("statusTask").setValue(false)
+                                            }
+                                        }
+
+                                        override fun onCancelled(error: DatabaseError) {
+                                            // handle error
+                                        }
+                                    })
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    // handle error
+                                }
+                            })
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            // handle error
+                        }
+                    })
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // Обработка ошибки чтения задач из базы данных
+                // handle error
             }
         })
     }
+
 
 }
